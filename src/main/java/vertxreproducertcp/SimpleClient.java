@@ -100,6 +100,8 @@ public class SimpleClient extends AbstractVerticle {
       } else {
         println("Client " + clientNr + " error!");
         asyncResult.cause().printStackTrace();
+        stat.connectFailed();
+        stat.print();
       }
     });
   }
@@ -126,6 +128,11 @@ public class SimpleClient extends AbstractVerticle {
 
     synchronized public void end() {
       connected.decrementAndGet();
+      end.incrementAndGet();
+    }
+
+    synchronized public void connectFailed() {
+      connecting.decrementAndGet();
       end.incrementAndGet();
     }
 
